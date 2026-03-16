@@ -63,7 +63,7 @@ def plot_pnl():
             'Sharpe Ratio',
             'Sụt giảm lớn nhất',
         ],
-        'HP': [
+        'DatNT_Smooth': [
             f"{np.round(sharpe_alpha, 2)}",
             f"{np.round(mdd_alpha * 100, 2)}%"
         ],
@@ -72,11 +72,11 @@ def plot_pnl():
             f"{np.round(mdd_vn30 * 100, 2)}%"
         ]
     }
-    # st.dataframe(
-    # comparison_data,
-    # use_container_width=True,
-    # hide_index=True
-    # )
+    st.dataframe(
+    comparison_data,
+    use_container_width=True,
+    hide_index=True
+    )
     # r_w_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-6] - 1 
     # r_m_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-22] - 1 
     # r_q_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-64] - 1 
@@ -98,7 +98,7 @@ def plot_pnl():
     #         'Từ ngày bắt đầu',
 
     #     ],
-    #     'HP': [
+    #     'DatNT_Smooth': [
     #         f"{np.round(r_w_alpha * 100, 2)}%",
     #         f"{np.round(r_m_alpha * 100, 2)}%",
     #         f"{np.round(r_q_alpha * 100, 2)}%",
