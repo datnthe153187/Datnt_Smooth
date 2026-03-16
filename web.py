@@ -72,53 +72,53 @@ def plot_pnl():
             f"{np.round(mdd_vn30 * 100, 2)}%"
         ]
     }
-    st.dataframe(
-    comparison_data,
-    use_container_width=True,
-    hide_index=True
-    )
-    r_w_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-6] - 1 
-    r_m_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-22] - 1 
-    r_q_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-64] - 1 
-    r_y_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-253] - 1 
-    r_all_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'][0] - 1 
+    # st.dataframe(
+    # comparison_data,
+    # use_container_width=True,
+    # hide_index=True
+    # )
+    # r_w_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-6] - 1 
+    # r_m_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-22] - 1 
+    # r_q_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-64] - 1 
+    # r_y_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'].iloc[-253] - 1 
+    # r_all_alpha = chart_data['Kết quả đầu tư'].iloc[-1]/chart_data['Kết quả đầu tư'][0] - 1 
     
-    r_w_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-6] - 1 
-    r_m_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-22] - 1 
-    r_q_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-64] - 1 
-    r_y_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-253] - 1 
-    r_all_vn30 = chart_data['VN30'].iloc[-1]/100 - 1 
+    # r_w_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-6] - 1 
+    # r_m_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-22] - 1 
+    # r_q_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-64] - 1 
+    # r_y_vn30 = chart_data['VN30'].iloc[-1]/chart_data['VN30'].iloc[-253] - 1 
+    # r_all_vn30 = chart_data['VN30'].iloc[-1]/100 - 1 
 
-    return_data = {
-        'Lợi nhuận (%)': [
-            '5 phiên gần nhất (1 tuần)',
-            '21 phiên gần nhất (1 tháng)',
-            '63 phiên gần nhất (1 quý)',
-            '252 phiên gần nhất (1 năm)',
-            'Từ ngày bắt đầu',
+    # return_data = {
+    #     'Lợi nhuận (%)': [
+    #         '5 phiên gần nhất (1 tuần)',
+    #         '21 phiên gần nhất (1 tháng)',
+    #         '63 phiên gần nhất (1 quý)',
+    #         '252 phiên gần nhất (1 năm)',
+    #         'Từ ngày bắt đầu',
 
-        ],
-        'HP': [
-            f"{np.round(r_w_alpha * 100, 2)}%",
-            f"{np.round(r_m_alpha * 100, 2)}%",
-            f"{np.round(r_q_alpha * 100, 2)}%",
-            f"{np.round(r_y_alpha * 100, 2)}%",
-            f"{np.round(r_all_alpha * 100, 2)}%"
+    #     ],
+    #     'HP': [
+    #         f"{np.round(r_w_alpha * 100, 2)}%",
+    #         f"{np.round(r_m_alpha * 100, 2)}%",
+    #         f"{np.round(r_q_alpha * 100, 2)}%",
+    #         f"{np.round(r_y_alpha * 100, 2)}%",
+    #         f"{np.round(r_all_alpha * 100, 2)}%"
 
-        ],
-        'VN30': [
-            f"{np.round(r_w_vn30 * 100, 2)}%",
-            f"{np.round(r_m_vn30 * 100, 2)}%",
-            f"{np.round(r_q_vn30 * 100, 2)}%",
-            f"{np.round(r_y_vn30 * 100, 2)}%",
-            f"{np.round(r_all_vn30 * 100, 2)}%"
-        ]
-    }
-    st.dataframe(
-    return_data,
-    use_container_width=True,
-    hide_index=True
-    )
+    #     ],
+    #     'VN30': [
+    #         f"{np.round(r_w_vn30 * 100, 2)}%",
+    #         f"{np.round(r_m_vn30 * 100, 2)}%",
+    #         f"{np.round(r_q_vn30 * 100, 2)}%",
+    #         f"{np.round(r_y_vn30 * 100, 2)}%",
+    #         f"{np.round(r_all_vn30 * 100, 2)}%"
+    #     ]
+    # }
+    # st.dataframe(
+    # return_data,
+    # use_container_width=True,
+    # hide_index=True
+    # )
 
 def calculate_profit():
     st.title("Tính Lợi Nhuận")
