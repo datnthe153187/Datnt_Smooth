@@ -22,8 +22,7 @@ def plot_pnl():
     gain_today =  str(np.round(arr_gain[-1] * 100, 2))
     
     df_vn30 = pd.read_csv('df_vn30.csv')
-    print(len(df))
-    print(len(df_vn30))
+
 
     df_vn30.Date = pd.to_datetime(df_vn30.Date)
     # df_vn30.Date = df_vn30.Date.dt.date
@@ -41,7 +40,10 @@ def plot_pnl():
     
     chart_data = pd.DataFrame()
     chart_data['Date'] = pd.to_datetime(df.Date)
-    chart_data['VN30'] = df_vn30['total_gain_new'].values 
+    print(len(chart_data))
+    print(len(df_vn30))
+    # chart_data['VN30'] = df_vn30['total_gain_new'].values 
+    chart_data['VN30'] = df_vn30['total_gain_new']
     chart_data['Kết quả đầu tư'] = df['total_gain_new'].values 
     
     col1, col2 = st.columns(2)
