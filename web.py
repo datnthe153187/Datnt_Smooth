@@ -23,26 +23,23 @@ def plot_pnl():
 
     # --- Tính gain ---
     df['total_gain_new'] = (df['gain'] + 1).cumprod()
-    total_gain_today = str(np.round(df['total_gain_new'].iloc[-1] * 100, 2))
-    gain_today = str(np.round(df['gain'].iloc[-1] * 100, 2))
-
     df_vn30['gain'] = df_vn30['Close'] / df_vn30['Close'].shift(1) - 1
     df_vn30['total_gain_new'] = (df_vn30['gain'] + 1).cumprod()
 
     # --- Merge theo Date ---
-    chart_data = df[['Date', 'total_gain_new']].rename(
-        columns={'total_gain_new': 'Kết quả đầu tư'}
+    chart_data = df[['Date', 'gain', 'total_gain_new']].rename(
+        columns={'total_gain_new': 'alpha'}
     )
 
-    df_vn30_plot = df_vn30[['Date', 'total_gain_new']].rename(
-        columns={'total_gain_new': 'VN30'}
+    df_vn30_plot = df_vn30[['Date', 'gain', 'total_gain_new']].rename(
+        columns={'total_gain_new': 'vn30'}
     )
 
     chart_data = chart_data.merge(df_vn30_plot, on='Date', how='inner')
 
-    # --- Normalize về cùng gốc 100 🔥 ---
-    chart_data['Kết quả đầu tư'] = chart_data['Kết quả đầu tư'] / chart_data['Kết quả đầu tư'].iloc[0] * 100
-    chart_data['VN30'] = chart_data['VN30'] / chart_data['VN30'].iloc[0] * 100
+    # --- Normalize về base = 100 ---
+    chart_data['alpha_norm'] = chart_data['alpha'] / chart_data['alpha'].iloc[0] * 100
+    chart_data['vn30_norm'] = chart_data['vn30'] / chart_data['vn30'].iloc[0] * 100
 
     # --- Metrics ---
     col1, col2 = st.columns(2)
@@ -50,27 +47,37 @@ def plot_pnl():
     with col1: 
         st.metric(
             label="Kết quả đầu tư của tôi", 
-            value=str(np.round(chart_data['Kết quả đầu tư'].iloc[-1], 2)), 
-            delta=gain_today + '%'
+            value=str(np.round(chart_data['alpha_norm'].iloc[-1], 2)), 
+            delta=str(np.round(chart_data['gain_x'].iloc[-1] * 100, 2)) + '%'
         )
 
     with col2: 
         st.metric(
             label="Tăng trưởng của VN30", 
-            value=str(np.round(chart_data['VN30'].iloc[-1], 2)), 
-            delta=str(np.round(df_vn30['gain'].iloc[-1] * 100, 2)) + ' %'
+            value=str(np.round(chart_data['vn30_norm'].iloc[-1], 2)), 
+            delta=str(np.round(chart_data['gain_y'].iloc[-1] * 100, 2)) + ' %'
         )
 
     # --- Chart ---
-    st.line_chart(chart_data, x="Date", y=["VN30", "Kết quả đầu tư"])
-    st.caption('Kết quả đầu tư so với tăng trưởng của VN30 (base = 100)')
+    st.line_chart(
+        chart_data.rename(columns={
+            'alpha_norm': 'Kết quả đầu tư',
+            'vn30_norm': 'VN30'
+        }),
+        x="Date",
+        y=["Kết quả đầu tư", "VN30"]
+    )
 
-    # --- Risk metrics ---
-    sharpe_alpha = df['gain'].mean() / df['gain'].std() * np.sqrt(252)
-    sharpe_vn30 = df_vn30['gain'].mean() / df_vn30['gain'].std() * np.sqrt(252)
+    st.caption('Kết quả đầu tư so với VN30 (base = 100)')
 
-    mdd_alpha = -(chart_data['Kết quả đầu tư'] / chart_data['Kết quả đầu tư'].cummax() - 1).min()
-    mdd_vn30 = -(chart_data['VN30'] / chart_data['VN30'].cummax() - 1).min()
+    # =========================
+    # 📉 RISK METRICS (ĐÚNG WINDOW)
+    # =========================
+    sharpe_alpha = chart_data['gain_x'].mean() / chart_data['gain_x'].std() * np.sqrt(252)
+    sharpe_vn30 = chart_data['gain_y'].mean() / chart_data['gain_y'].std() * np.sqrt(252)
+
+    mdd_alpha = -(chart_data['alpha_norm'] / chart_data['alpha_norm'].cummax() - 1).min()
+    mdd_vn30 = -(chart_data['vn30_norm'] / chart_data['vn30_norm'].cummax() - 1).min()
 
     comparison_data = {
         'Chỉ số': [
