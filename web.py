@@ -10,7 +10,7 @@ sidebar_radiio = st.sidebar.radio(
 )
 
 def plot_pnl(): 
-    df = pd.read_csv('pnl_live.csv')
+    df = pd.read_csv('C:/python/DatNT/Healing/PNL_live/Datnt_Smooth/pnl_live.csv')
     df.Date = pd.to_datetime(df.Date)
     df.Date = df.Date.dt.date
     arr_gain = df.gain.values 
@@ -21,7 +21,7 @@ def plot_pnl():
     total_gain_today = str(np.round((df.total_gain_new.values[-1]), 2))
     gain_today =  str(np.round(arr_gain[-1] * 100, 2))
     
-    df_vn30 = pd.read_csv('df_vn30.csv')
+    df_vn30 = pd.read_csv('C:/python/DatNT/Healing/PNL_live/Datnt_Smooth/df_vn30.csv')
 
     df_vn30.Date = pd.to_datetime(df_vn30.Date)
     # df_vn30.Date = df_vn30.Date.dt.date
