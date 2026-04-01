@@ -175,7 +175,7 @@ def calculate_profit():
         # if option == "Option 1: 80-20":
             # st.success("✅ Bạn đã chọn Option 2 với tỷ lệ 80-20.")
             print('lãi')
-            # st.caption("Hiệu suất dưới 50%, bạn sẽ nhận 80%, từ phần trăm thứ 51 tôi sẽ nhận 80%")
+            st.caption("Hiệu suất dưới 50%, bạn sẽ nhận 80%, từ phần trăm thứ 51 tôi sẽ nhận 80%")
             if gain_per_year < 0.5: 
                 # return_final = np.round(total_gain * total_money * 0.8, 2)
                 st.write(f"Lãi thu về: {np.round(Tong_lai * 0.8)} triệu đ")
