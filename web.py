@@ -22,6 +22,8 @@ def plot_pnl():
     gain_today =  str(np.round(arr_gain[-1] * 100, 2))
     
     df_vn30 = pd.read_csv('df_vn30.csv')
+    print(len(df))
+    print(len(df_vn30))
 
     df_vn30.Date = pd.to_datetime(df_vn30.Date)
     # df_vn30.Date = df_vn30.Date.dt.date
@@ -170,7 +172,8 @@ def calculate_profit():
     if gain_per_year >= 0: 
         # if option == "Option 1: 80-20":
             # st.success("✅ Bạn đã chọn Option 2 với tỷ lệ 80-20.")
-            st.caption("Hiệu suất dưới 50%, bạn sẽ nhận 80%, từ phần trăm thứ 51 tôi sẽ nhận 80%")
+            print('lãi')
+            # st.caption("Hiệu suất dưới 50%, bạn sẽ nhận 80%, từ phần trăm thứ 51 tôi sẽ nhận 80%")
             if gain_per_year < 0.5: 
                 # return_final = np.round(total_gain * total_money * 0.8, 2)
                 st.write(f"Lãi thu về: {np.round(Tong_lai * 0.8)} triệu đ")
@@ -179,6 +182,7 @@ def calculate_profit():
                 st.write(f"Lãi thu về: {return_final} triệu đ")
     else: 
         # st.success("✅ Bạn đã chọn Option 1 với tỷ lệ 50-50.")
+        print('lỗ')
         return_final = np.round(total_gain * total_money, 2)
         st.write(f"Lãi thu về: {return_final} triệu đ")
 login = True 
