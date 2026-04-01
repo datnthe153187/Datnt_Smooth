@@ -22,14 +22,14 @@ def plot_pnl():
     df_vn30['Date'] = pd.to_datetime(df_vn30['Date'])
 
     # --- Tính gain ---
-    df['total_gain_new'] = (df['gain'] + 1).cumprod() * 100
-    total_gain_today = str(np.round(df['total_gain_new'].iloc[-1], 2))
+    df['total_gain_new'] = (df['gain'] + 1).cumprod()
+    total_gain_today = str(np.round(df['total_gain_new'].iloc[-1] * 100, 2))
     gain_today = str(np.round(df['gain'].iloc[-1] * 100, 2))
 
     df_vn30['gain'] = df_vn30['Close'] / df_vn30['Close'].shift(1) - 1
-    df_vn30['total_gain_new'] = (df_vn30['gain'] + 1).cumprod() * 100
+    df_vn30['total_gain_new'] = (df_vn30['gain'] + 1).cumprod()
 
-    # --- Merge theo Date (FIX LỖI CHÍNH) ---
+    # --- Merge theo Date ---
     chart_data = df[['Date', 'total_gain_new']].rename(
         columns={'total_gain_new': 'Kết quả đầu tư'}
     )
@@ -40,32 +40,36 @@ def plot_pnl():
 
     chart_data = chart_data.merge(df_vn30_plot, on='Date', how='inner')
 
+    # --- Normalize về cùng gốc 100 🔥 ---
+    chart_data['Kết quả đầu tư'] = chart_data['Kết quả đầu tư'] / chart_data['Kết quả đầu tư'].iloc[0] * 100
+    chart_data['VN30'] = chart_data['VN30'] / chart_data['VN30'].iloc[0] * 100
+
     # --- Metrics ---
     col1, col2 = st.columns(2)
 
     with col1: 
         st.metric(
             label="Kết quả đầu tư của tôi", 
-            value=total_gain_today, 
+            value=str(np.round(chart_data['Kết quả đầu tư'].iloc[-1], 2)), 
             delta=gain_today + '%'
         )
 
     with col2: 
         st.metric(
             label="Tăng trưởng của VN30", 
-            value=str(np.round(df_vn30['total_gain_new'].iloc[-1], 2)), 
+            value=str(np.round(chart_data['VN30'].iloc[-1], 2)), 
             delta=str(np.round(df_vn30['gain'].iloc[-1] * 100, 2)) + ' %'
         )
 
     # --- Chart ---
     st.line_chart(chart_data, x="Date", y=["VN30", "Kết quả đầu tư"])
-    st.caption('Kết quả đầu tư so với tăng trưởng của VN30')
+    st.caption('Kết quả đầu tư so với tăng trưởng của VN30 (base = 100)')
 
     # --- Risk metrics ---
     sharpe_alpha = df['gain'].mean() / df['gain'].std() * np.sqrt(252)
-    mdd_alpha = -(chart_data['Kết quả đầu tư'] / chart_data['Kết quả đầu tư'].cummax() - 1).min()
-
     sharpe_vn30 = df_vn30['gain'].mean() / df_vn30['gain'].std() * np.sqrt(252)
+
+    mdd_alpha = -(chart_data['Kết quả đầu tư'] / chart_data['Kết quả đầu tư'].cummax() - 1).min()
     mdd_vn30 = -(chart_data['VN30'] / chart_data['VN30'].cummax() - 1).min()
 
     comparison_data = {
@@ -104,7 +108,6 @@ def calculate_profit():
 
     df['total_gain_new'] = (df['gain'] + 1).cumprod()
 
-    # --- Filter ---
     filtered_df = df[(df['Date'] >= start_day) & (df['Date'] <= start_end)]
     out_df = df[df['Date'] < start_day]
 
